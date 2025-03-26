@@ -1,0 +1,21 @@
+FROM amazoncorretto:21.0.5 AS build
+RUN yum install -y tzdata && \
+    ln -sf /usr/share/zoneinfo/Asia/Bangkok /etc/localtime && \
+    echo "Asia/Bangkok" > /etc/timezone
+
+WORKDIR /app
+
+COPY . /app/
+ENV GRADLE_USER_HOME=/app/.gradle
+
+ARG version=2.11.0
+RUN /app/gradlew clean assemble
+
+FROM azul/zulu-openjdk:21.0.1-21.30-jdk-crac
+
+WORKDIR /app
+
+COPY --from=build /app/build/libs/crac-0.0.1-SNAPSHOT.jar /app/
+
+EXPOSE 8080
+CMD ["java", "-Dspring.profiles.active=local","-XX:CRaCCheckpointTo=checkpoint","-jar", "crac-0.0.1-SNAPSHOT.jar"]
