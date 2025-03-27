@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.3-labs
 FROM amazoncorretto:21.0.5 AS build
 RUN yum install -y tzdata && \
     ln -sf /usr/share/zoneinfo/Asia/Bangkok /etc/localtime && \
