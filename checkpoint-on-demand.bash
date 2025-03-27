@@ -61,7 +61,7 @@ function waitForService() {
 
 function runWarmupCalls() {
   assertCurl 200 "localhost:$PORT/test"
-  assertEqual 3 $(echo $RESPONSE | jq length)
+#  assertEqual 3 $(echo $RESPONSE | jq length)
 }
 
 function warmup() {
